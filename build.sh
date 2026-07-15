@@ -9,22 +9,30 @@ LINE="${VERSION%.*}"
 IMAGE="${IMAGE:-markriggins/suitecrm}"
 PUSH="${PUSH:-0}"
 
-echo "==> Building ${IMAGE}:${VERSION} (SuiteCRM ${VERSION})"
-docker build \
-  --build-arg "SUITECRM_VERSION=${VERSION}" \
-  -t "${IMAGE}:${VERSION}" \
-  -t "${IMAGE}:${LINE}" \
-  .
+# Multi-arch required: Mac (arm64) + DigitalOcean droplet (amd64)
+PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
 
-echo "Built:"
-echo "  ${IMAGE}:${VERSION}"
-echo "  ${IMAGE}:${LINE}"
-
+echo "==> Building ${IMAGE}:${VERSION} (SuiteCRM ${VERSION}) platforms=${PLATFORMS}"
 if [[ "${PUSH}" == "1" ]]; then
-  echo "==> Pushing to Docker Hub..."
-  docker push "${IMAGE}:${VERSION}"
-  docker push "${IMAGE}:${LINE}"
-  echo "Pushed."
+  docker buildx build \
+    --platform "${PLATFORMS}" \
+    --build-arg "SUITECRM_VERSION=${VERSION}" \
+    -t "${IMAGE}:${VERSION}" \
+    -t "${IMAGE}:${LINE}" \
+    --push \
+    .
+  echo "Pushed ${IMAGE}:${VERSION} and ${IMAGE}:${LINE}"
 else
-  echo "Skip push (set PUSH=1 to push)."
+  docker buildx build \
+    --platform "${PLATFORMS}" \
+    --build-arg "SUITECRM_VERSION=${VERSION}" \
+    -t "${IMAGE}:${VERSION}" \
+    -t "${IMAGE}:${LINE}" \
+    --load \
+    . 2>/dev/null || docker build \
+    --build-arg "SUITECRM_VERSION=${VERSION}" \
+    -t "${IMAGE}:${VERSION}" \
+    -t "${IMAGE}:${LINE}" \
+    .
+  echo "Built locally (set PUSH=1 for multi-arch Hub push)."
 fi
