@@ -1,0 +1,5 @@
+SUITECRM_VERSION=8.10.1
+PHP_VERSION=8.3
+IMAGE=markriggins/suitecrm
+TAGS=8.10.1 8.10
+SOURCE=https://github.com/SuiteCRM/SuiteCRM-Core/releases/download/v8.10.1/SuiteCRM-8.10.1.zip

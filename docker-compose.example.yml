@@ -1,0 +1,33 @@
+# Minimal example — not used by Ojenta (Ojenta has its own compose).
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MYSQL_DATABASE: suitecrm
+      MYSQL_USER: suitecrm
+      MYSQL_PASSWORD: suitecrm
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  suitecrm:
+    image: markriggins/suitecrm:8.10.1
+    ports:
+      - "8080:80"
+    environment:
+      SUITECRM_DATABASE_HOST: db
+      SUITECRM_DATABASE_NAME: suitecrm
+      SUITECRM_DATABASE_USER: suitecrm
+      SUITECRM_DATABASE_PASSWORD: suitecrm
+      SUITECRM_HOST: localhost
+      SUITECRM_EXTERNAL_HTTP_PORT_NUMBER: "8080"
+      SUITECRM_USERNAME: admin
+      SUITECRM_PASSWORD: admin
+    volumes:
+      - appdata:/var/www/html
+    depends_on:
+      - db
+
+volumes:
+  dbdata:
+  appdata:
