@@ -28,6 +28,10 @@ RUN { \
       echo 'post_max_size=64M'; \
       echo 'max_execution_time=300'; \
       echo 'date.timezone=UTC'; \
+      echo 'display_errors=Off'; \
+      echo 'display_startup_errors=Off'; \
+      echo 'log_errors=On'; \
+      echo 'error_reporting=E_ALL \& ~E_DEPRECATED \& ~E_STRICT'; \
     } > /usr/local/etc/php/conf.d/suitecrm.ini
 
 # Official pre-built package (not -dev)
@@ -47,6 +51,11 @@ RUN set -eux; \
     test -f /opt/suitecrm-seed/bin/console; \
     test -d /opt/suitecrm-seed/public; \
     echo "${SUITECRM_VERSION}" > /opt/suitecrm-seed/.suitecrm-version
+
+# Engine patches (see patches/PATCHES.md) — never apply SuiteCRM core fixes in consumers
+COPY patches /opt/suitecrm-patches
+RUN chmod +x /opt/suitecrm-patches/apply-patches.sh \
+    && /opt/suitecrm-patches/apply-patches.sh /opt/suitecrm-seed
 
 COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY docker-entrypoint.sh /usr/local/bin/suitecrm-entrypoint.sh

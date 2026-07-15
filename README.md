@@ -66,9 +66,20 @@ docker push markriggins/suitecrm:8.10
 
 Volume: `/var/www/html` (full app tree after seed).
 
-## Not included
+## Engine patches
 
-Product branding, custom modules (e.g. Ojenta Chapters). Layer those in the consuming project.
+**All SuiteCRM core / Smarty / PHP / Apache patches for this image live in this repo only.**  
+See [`patches/PATCHES.md`](patches/PATCHES.md). Consumers must not sed SuiteCRM core in their app repos.
+
+## Not included (consumer responsibility)
+
+Product branding, custom modules (e.g. Ojenta Chapters), business config. Layer those in the consuming project after pull.
+
+## Consumers (e.g. Ojenta)
+
+- **Relationship:** pull `markriggins/suitecrm:<pin>` only — no monorepo, no submodule required.
+- **Do:** product overlay (custom modules, logos).
+- **Do not:** patch SuiteCRM source outside this repository.
 
 ## License
 

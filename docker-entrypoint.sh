@@ -20,6 +20,11 @@ if [[ -f "${SEED_ROOT}/.suitecrm-version" ]]; then
   cp "${SEED_ROOT}/.suitecrm-version" "${APP_ROOT}/.suitecrm-version"
 fi
 
+# Re-apply engine patches on every start (idempotent; upgrades existing volumes)
+if [[ -x /opt/suitecrm-patches/apply-patches.sh ]]; then
+  /opt/suitecrm-patches/apply-patches.sh "${APP_ROOT}"
+fi
+
 mkdir -p \
   "${APP_ROOT}/cache" \
   "${APP_ROOT}/logs" \
