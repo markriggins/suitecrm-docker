@@ -1,4 +1,4 @@
-# Minimal example — not used by Ojenta (Ojenta has its own compose).
+# Minimal local demo only. Override all passwords for real use.
 services:
   db:
     image: mariadb:11.4

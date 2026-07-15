@@ -1,10 +1,12 @@
 # SuiteCRM engine patches
 
-**Policy:** All patches to SuiteCRM core, Smarty, PHP defaults, Apache, or install behavior for this image **must** be done in **this repo** (`suitecrm-docker`), never in Ojenta or other consumers.
+**Policy:** All patches to SuiteCRM core, Smarty, PHP defaults, Apache, or install behavior for this image **must** be done in **this repo** (`suitecrm-docker`), never in downstream product repos.
 
-Consumers (e.g. Ojenta Guild) only:
+This repository is **product-agnostic**: no tenant branding, custom modules, real credentials, or PII.
+
+Consumers only:
 - Pull `markriggins/suitecrm:<pin>`
-- Apply **product** customizations (custom modules, branding) in their own repo
+- Apply product customizations in their own repositories
 
 ## How patches are applied
 

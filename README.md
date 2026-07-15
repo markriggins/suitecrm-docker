@@ -71,15 +71,19 @@ Volume: `/var/www/html` (full app tree after seed).
 **All SuiteCRM core / Smarty / PHP / Apache patches for this image live in this repo only.**  
 See [`patches/PATCHES.md`](patches/PATCHES.md). Consumers must not sed SuiteCRM core in their app repos.
 
-## Not included (consumer responsibility)
+## Scope (this repo stays product-agnostic)
 
-Product branding, custom modules (e.g. Ojenta Chapters), business config. Layer those in the consuming project after pull.
+**Allowed:** SuiteCRM packaging, generic engine patches, documented example env defaults for local demos.
 
-## Consumers (e.g. Ojenta)
+**Not allowed:**
+- Product/tenant branding or custom modules
+- Real passwords, API keys, or production credentials
+- PII or customer data
+- Downstream product names or private business logic
 
-- **Relationship:** pull `markriggins/suitecrm:<pin>` only — no monorepo, no submodule required.
-- **Do:** product overlay (custom modules, logos).
-- **Do not:** patch SuiteCRM source outside this repository.
+Consumers pull `markriggins/suitecrm:<pin>` and apply their own overlay elsewhere.
+
+Example passwords in this README (`admin` / `suitecrm`) are **local demo defaults only** — override via env in real deployments.
 
 ## License
 
