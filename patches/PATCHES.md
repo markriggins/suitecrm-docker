@@ -35,6 +35,15 @@ Consumers only:
 | **Fix** | `display_errors=Off`, log deprecations only — in `Dockerfile` `suitecrm.ini` |
 | **Why** | Deprecations from upstream must not break HTML layout |
 
+### 003 — History timeline blank text audit values
+
+| | |
+|---|---|
+| **Symptom** | Timeline “Record Updated” shows enum changes (e.g. Status: Rejected) but **text** fields (e.g. Status Description) are blank |
+| **Cause** | `HistoryTimelineDataHandler::queryAuditInfo` only `GROUP_CONCAT(after_value_string)`; Suite stores text audits in `after_value_text` |
+| **Fix** | `COALESCE(NULLIF(after_value_string,''), after_value_text)`; unit-separator for GROUP_CONCAT so commas in text do not break PHP `explode` |
+| **Files** | `patches/apply-patches.sh` (`patch_003_*`) |
+
 ## Adding a new patch
 
 1. Add logic to `patches/apply-patches.sh` (idempotent).
@@ -42,8 +51,8 @@ Consumers only:
 3. Rebuild and push: `PUSH=1 ./build.sh`
 4. Consumers bump nothing if tag is same pin re-push; or bump `SUITECRM_IMAGE_TAG` if you cut a new tag.
 
-## Not patches (belong in consumer)
+## Not patches (belong in consumer apps)
 
-- Custom modules (e.g. OG_Chapters)
+- Custom modules
 - Logos / system name
-- Tabs, ACL, dashlets product config
+- Tabs, ACL, dashlets, business config
