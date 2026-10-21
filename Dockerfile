@@ -1,7 +1,8 @@
 # Generic SuiteCRM 8.10.x image — pinned, not floating :latest
 # Publish: docker.io/markriggins/suitecrm:8.10.1
 ARG SUITECRM_VERSION=8.10.1
-ARG PHP_VERSION=8.3
+# Pinned: PHP2Shell fix (CVE-2026-109618, CVE-2026-109619). Never go below 8.3.36.
+ARG PHP_VERSION=8.3.36
 
 FROM php:${PHP_VERSION}-apache-bookworm
 
