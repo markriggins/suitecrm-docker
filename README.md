@@ -6,7 +6,7 @@ Public Docker image for **SuiteCRM 8.10.x**, pinned (not floating `latest` for a
 
 | Tag | Meaning |
 |---|---|
-| `8.10.1` | Exact app pin (prefer this) |
+| `8.10.2` | Exact app pin (prefer this) |
 | `8.10` | Same build; minor line alias |
 | `latest` | Optional; may lag — prefer version tags |
 
@@ -32,7 +32,7 @@ docker run -d --name suitecrm \
   -e SUITECRM_PASSWORD=admin \
   --link suitecrm-db:suitecrm-db \
   -v suitecrm_data:/var/www/html \
-  markriggins/suitecrm:8.10.1
+  markriggins/suitecrm:8.10.2
 ```
 
 First boot runs CLI install. Log line: `setup finished`.
@@ -42,8 +42,8 @@ First boot runs CLI install. Log line: `setup finished`.
 ```bash
 ./build.sh
 # or:
-docker build -t markriggins/suitecrm:8.10.1 -t markriggins/suitecrm:8.10 .
-docker push markriggins/suitecrm:8.10.1
+docker build -t markriggins/suitecrm:8.10.2 -t markriggins/suitecrm:8.10 .
+docker push markriggins/suitecrm:8.10.2
 docker push markriggins/suitecrm:8.10
 ```
 

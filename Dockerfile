@@ -1,6 +1,6 @@
 # Generic SuiteCRM 8.10.x image — pinned, not floating :latest
-# Publish: docker.io/markriggins/suitecrm:8.10.1
-ARG SUITECRM_VERSION=8.10.1
+# Publish: docker.io/markriggins/suitecrm:8.10.2
+ARG SUITECRM_VERSION=8.10.2
 # Pinned: PHP2Shell fix (CVE-2026-109618, CVE-2026-109619). Never go below 8.3.36.
 ARG PHP_VERSION=8.3.36
 
@@ -34,6 +34,9 @@ RUN { \
       echo 'log_errors=On'; \
       echo 'error_reporting=E_ALL \& ~E_DEPRECATED \& ~E_STRICT'; \
     } > /usr/local/etc/php/conf.d/suitecrm.ini
+
+# CVE-2026-115560 hardening: no session upload-progress tracking (SuiteCRM does not use it)
+RUN echo 'session.upload_progress.enabled=0' > /usr/local/etc/php/conf.d/zz-security-hardening.ini
 
 # Official pre-built package (not -dev)
 WORKDIR /opt/suitecrm-seed
